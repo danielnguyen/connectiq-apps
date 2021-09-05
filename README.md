@@ -1,2 +1,15 @@
 # connectiq-apps
-A repository containing all of my Garmin Connect IQ apps, widgets and faces
+A repository containing all of Danie's Garmin Connect IQ apps, widgets, data fields and faces.
+
+## Widgets
+
+### UV Tracker
+
+A widget to provide information about daily UV forecast, based on GPS data instead of general city.
+
+Leverages the following APIs:
+- [openuv.io](https://openuv.io) 
+- [Nominatim by Open Street Maps](https://nominatim.openstreetmap.org)
+
+As this source code is provided as-is, you will need to provide your own API keys and repackage.
+
