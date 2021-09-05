@@ -1,0 +1,18 @@
+<strings>
+    <string id="AppName">UV Tracker</string>
+
+	<!-- Labels-->
+	<string id="am">am</string>
+	<string id="pm">pm</string>
+	<string id="text_now">NOW</string>
+	<string id="text_max">MAX</string>
+	<string id="text_updated">LAST UPDATED</string>
+
+	<!-- UV Severities -->
+	<string id="uv_low">LOW</string>
+	<string id="uv_medium">MED</string>
+	<string id="uv_high">HIGH</string>
+	<string id="uv_veryhigh">VERY\nHIGH</string>
+	<string id="uv_extreme">XTRM</string>
+	<string id="uv_unknown">UNK</string>
+</strings>

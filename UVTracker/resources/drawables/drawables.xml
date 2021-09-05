@@ -1,0 +1,6 @@
+<drawables>
+    <bitmap id="LauncherIcon" filename="launcher_icon.png" />
+
+    <!-- Emojis from https://emojipedia.org -->
+    <bitmap id="EmojiFire" filename="EmojiFire.png" />
+</drawables>
