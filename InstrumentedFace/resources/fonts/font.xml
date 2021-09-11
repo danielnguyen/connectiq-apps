@@ -1,0 +1,11 @@
+<fonts>
+	<font id="IconsFont" filename="icons.fnt" antialias="true" filter="RVXmyÁÄÏ"/>
+	<!-- <font id="Squared6Font" filename="Squared/Squared_6_WH.fnt" antialias="true" /> -->
+	<font id="Roboto8Font" filename="Roboto/Roboto_8_WH.fnt" antialias="true" />
+	<font id="Roboto16Font" filename="Roboto/Roboto_16_WH.fnt" antialias="true" />
+	<font id="Roboto18Font" filename="Roboto/Roboto_18_WH.fnt" antialias="true" />
+	<!-- <font id="Squared24Font" filename="Squared/Squared_24_WH.fnt" antialias="true" filter="0123456789" /> -->
+	<!-- <font id="Squared48Font" filename="Squared/Squared_48_WH.fnt" antialias="true" filter="0123456789-" />
+	<font id="Squared60Font" filename="Squared/Squared_60_WH.fnt" antialias="true" filter="0123456789:" /> -->
+	<font id="Roboto72Font" filename="Roboto/Roboto_72_WH.fnt" antialias="true" filter="0123456789:" />
+</fonts>

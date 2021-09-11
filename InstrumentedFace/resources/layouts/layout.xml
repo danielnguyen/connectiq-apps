@@ -1,0 +1,24 @@
+<layout id="WatchFace">
+    <drawable class="Background" />
+    
+    <!-- <label id="label1" x="25%" y="40" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" color="Gfx.COLOR_LT_GRAY" text="LABEL1" />
+    <label id="value1" x="25%" y="55" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" color="Gfx.COLOR_WHITE" text="VALUE" />
+
+    <label id="label2" x="center" y="40" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" color="Gfx.COLOR_LT_GRAY" text="LABEL2" />
+    <label id="value2" x="center" y="55" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" color="Gfx.COLOR_WHITE" text="VALUE" />
+
+    <label id="label3" x="75%" y="40" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" color="Gfx.COLOR_LT_GRAY" text="LABEL3" />
+    <label id="value3" x="75%" y="55" font="Gfx.FONT_XTINY" justification="Gfx.TEXT_JUSTIFY_CENTER" color="Gfx.COLOR_WHITE" text="VALUE" /> -->
+    
+    <drawable class="Battery" />
+    <drawable class="Weather" />
+    <drawable class="Date" />
+    <drawable class="Clock" />
+    <drawable class="Health" />
+    <drawable class="Covid" />
+    <!-- <drawable class="Empty" /> -->
+    <!-- <drawable class="Empty" /> -->
+
+    <!-- <label id="time_value" x="center" y="30%" font="Graphics.FONT_LARGE" justification="Gfx.TEXT_JUSTIFY_CENTER" color="Gfx.COLOR_WHITE" /> -->
+    
+</layout>
