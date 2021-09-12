@@ -1,5 +1,7 @@
 /.metadata/
+**/bin/
 **/*secrets*
 **/dist/
+**/testdata*
 *.der
 .DS_Store
