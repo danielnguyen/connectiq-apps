@@ -185,7 +185,7 @@ class BackgroundService extends System.ServiceDelegate {
             var historicalData = getSevenDayAverages(data["cases"]);
             onReceive_OpenCovid(responseCode, historicalData, "covid19data_on_14days");
 
-            onReceive_OpenCovid(responseCode, data["cases"][data.size()-1], "covid19data_on");
+            onReceive_OpenCovid(responseCode, data["cases"][data["cases"].size()-1], "covid19data_on");
         }
         $.logMessage("BackgroundService::onReceive_OpenCovid_ON EXIT");
        	exitReq();

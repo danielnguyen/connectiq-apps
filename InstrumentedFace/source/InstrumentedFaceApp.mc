@@ -2,6 +2,7 @@ using Toybox.Application;
 using Toybox.Application.Storage;
 using Toybox.Background;
 using Toybox.Lang;
+// using Toybox.Position;
 import Toybox.Time;
 using Toybox.WatchUi;
 
@@ -24,6 +25,10 @@ class InstrumentedFaceApp extends Application.AppBase {
 
     // Return the initial view of your application here
     function getInitialView() as Array<Views or InputDelegates>? {
+
+        // WatchFace not allowed to call enableLocationEvents: https://developer.garmin.com/connect-iq/core-topics/manifest-and-permissions/#fn:2
+        // Get latest position and cache it
+        // Position.enableLocationEvents(Position.LOCATION_ONE_SHOT, method(:onPosition));
         
         Background.deleteTemporalEvent();
 
@@ -41,28 +46,7 @@ class InstrumentedFaceApp extends Application.AppBase {
             // Update the view if data available
             updateData(null);
         }
-
-        // if(Toybox.System has :ServiceDelegate) {
-        //     var lastRunTime = Background.getLastTemporalEventTime();
-        //     var nextRunTime = Background.getTemporalEventRegisteredTime();
-
-        //     if (Storage.getValue("DataUpdated") == null 
-        //             || lastRunTime == null || nextRunTime == null
-        //             || Time.now().subtract(lastRunTime).value() > duration.value()) {
-
-        //         var fiveSecondsFromNow = new Time.Moment(Time.now().value() + 5);
-        //         try {
-        //             Background.registerForTemporalEvent(fiveSecondsFromNow);
-        //         } catch (e) {
-        //             // Try again in 5 minutes
-        //             $.logMessage("Trying again in 5 minutes");
-        //             var fiveMinutesFromNow = new Time.Moment(Time.now().value() + (5 * 60));
-        //             Background.registerForTemporalEvent(fiveMinutesFromNow);
-        //         }
-        //     } else {
-        //         // Wait for the next scheduled call.
-        //     }
-    	// }
+        
         return [ new InstrumentedFaceView() ] as Array<Views or InputDelegates>;
     }
 
@@ -131,6 +115,14 @@ class InstrumentedFaceApp extends Application.AppBase {
     // New app settings have been received so trigger a UI update
     function onSettingsChanged() {
         WatchUi.requestUpdate();
+    }
+
+    function onPosition(info) {
+        $.logMessage("App::onPosition ENTER");
+        $.logMessage("Location updated");
+        Storage.setValue("LocationUpdated", data["updated"]);
+        Storage.setValue("position", info.position);
+        $.logMessage("App::onPosition EXIT");
     }
 
 }
