@@ -91,8 +91,12 @@ class UVTrackerView extends WatchUi.View {
                 View.findDrawableById( "uv_sev_value" ).draw( dc );
 
                 var uvExposureMins = bgData["current_uv_data"]["safe_exposure_time"]["st1"];
-                var uvExposureHours = uvExposureMins / 60.0;
-                _message = "Safe exposure time: " + uvExposureHours.format("%.1f") + " hours";
+                if (uvExposureMins instanceof Number) {
+                    var uvExposureHours = uvExposureMins.toFloat() / 60.0;
+                    _message = "Safe exposure time: " + uvExposureHours.format("%.1f") + " hours";
+                } else {
+                    _message = "You are currently safe";
+                }
             }
 
             var uvMaxValue = bgData["current_uv_data"]["uv_max"];

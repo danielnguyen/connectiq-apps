@@ -5,12 +5,15 @@ using Toybox.Background;
 using Toybox.Lang;
 using Toybox.Position;
 using Toybox.Time;
-using Toybox.WatchUi as Ui;
+using Toybox.WatchUi;
 
 class UVTrackerApp extends Application.AppBase {
 
+    var REFRESH_INTERVAL = 0;
+
     function initialize() {
         AppBase.initialize();
+        REFRESH_INTERVAL = $.DEV_MODE ? 5 : 60;
     }
 
     // onStart() is called on application start up
@@ -21,9 +24,6 @@ class UVTrackerApp extends Application.AppBase {
     // onStop() is called when your application is exiting
     function onStop(state as Dictionary?) as Void {
         $.logMessage("App::onStop");
-        // Position.enableLocationEvents(Position.LOCATION_DISABLE, method(:onPosition));
-        // Clean up and delete registered temporal event
-        Background.deleteTemporalEvent();
     }
 
     // Return the initial view of your application here
@@ -33,12 +33,20 @@ class UVTrackerApp extends Application.AppBase {
         // Get latest position and cache it
         Position.enableLocationEvents(Position.LOCATION_ONE_SHOT, method(:onPosition));
 
-        if(Toybox.System has :ServiceDelegate) {
-            $.logMessage("App::Registering Temporal Event (immediate).");\
+        Background.deleteTemporalEvent();
+
+        Storage.setValue("DataRefreshInterval", REFRESH_INTERVAL);
+        var duration = new Time.Duration(REFRESH_INTERVAL * 60);
+
+        if(Background.getLastTemporalEventTime() == null) { //just for first run
             Background.registerForTemporalEvent(Time.now());
-    	} else {
-    		$.logMessage("****background not available on this device****");
-    	}
+            $.logMessage("getInitialView: No last TemporalEvent, registered NOW");      
+        }
+        else {
+             Background.registerForTemporalEvent(Background.getLastTemporalEventTime().add(duration));
+             $.logMessage("getInitialView: TemporalEvent registered as last + refreshInterval");
+        }
+
         $.logMessage("App::getInitialView EXIT");
         return [ new UVTrackerView() ];
     }
@@ -51,11 +59,20 @@ class UVTrackerApp extends Application.AppBase {
     function onBackgroundData(data) {
         $.logMessage("App::onBackgroundData ENTER");
         
-        $.logMessage("App::Registering Temporal Event (1 hour).");\
-        Background.registerForTemporalEvent(new Time.Duration(60 * 60));
     	Storage.setValue($.STORAGE_UV_DATA, data);
+
+        //Following update and refresh, set duration to trigger every hour
+        var duration = new Time.Duration(REFRESH_INTERVAL * 60);
+        try {
+            Background.deleteTemporalEvent();
+            Background.registerForTemporalEvent(Background.getLastTemporalEventTime().add(duration));
+            $.logMessage("App::onBackgroundData: TemporalEvent registered as last + refreshInterval");     
+        }
+        catch(exception) {
+           $.logMessage(exception);
+        }
         
-        Ui.requestUpdate();
+        WatchUi.requestUpdate();
         $.logMessage("App::onBackgroundData EXIT");
     }
 
