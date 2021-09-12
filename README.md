@@ -17,6 +17,16 @@ As this source code is provided as-is, you will need to provide your own API key
 
 ## Widgets
 
+### COVID-19 Tracker
+
+A widget to provide information about daily COVID-19 case trends.
+
+Leverages the following APIs:
+- [opencovid.ca](https://opencovid.ca)
+
+![image](https://user-images.githubusercontent.com/845913/133005270-0090026b-d95a-4c07-837c-e8ad11f5e262.png)
+
+
 ### UV Tracker
 
 A widget to provide information about daily UV forecast, based on GPS data instead of general city.
