@@ -17,7 +17,7 @@ class Ring extends Ui.Drawable {
 			var timeDegree = 0;
 
 			// Arc width
-			dc.setPenWidth( 8 );
+			dc.setPenWidth(6);
 
 			// Arc - No UV
 			drawUVArc(dc, Graphics.COLOR_BLUE, 1, 0, 360);
@@ -34,7 +34,11 @@ class Ring extends Ui.Drawable {
 						var color = $.getUVSeverityColor(segment["severity"]);
 						var startDegrees = $.convertTimeToDegrees($.getMomentByTimeString(segment["startDate"]));
 						var endDegrees = $.convertTimeToDegrees($.getMomentByTimeString(segment["endDate"]));
-						drawUVArc(dc, color, 2, startDegrees, endDegrees);
+
+						// avoid case where start degrees = end degrees, otherwise it will paint a full circle
+						if (startDegrees != endDegrees) {
+							drawUVArc(dc, color, 2, startDegrees, endDegrees);
+						}
 					}
 
 					// Arc - Max UV

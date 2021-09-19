@@ -7,10 +7,11 @@ enum StorageKeys {
 }
 
 enum UVIndex {
-    UV_INDEX_UNKNOWN,
+    UV_INDEX_NONE,
     UV_INDEX_LOW,
     UV_INDEX_MEDIUM,
     UV_INDEX_HIGH,
     UV_INDEX_VERY_HIGH,
-    UV_INDEX_EXTREME
+    UV_INDEX_EXTREME,
+    UV_INDEX_UNKNOWN
 }

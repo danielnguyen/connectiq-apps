@@ -5,29 +5,34 @@ using Toybox.Time;
 using Toybox.Time.Gregorian;
 using Toybox.WatchUi as Ui;
 
+// Cannot be used in Background services because no access to WatchUi
 function getUVSeverity(value) {
-
-    var level = 0;
+    $.logMessage("UVHelpers::getUVSeverity START");
+    var level = $.UV_INDEX_UNKNOWN;
     var severity;
 
-    if (value < 3) {
-        level = 1;
+    if (value < 0.2) {
+        level = $.UV_INDEX_NONE;
+        severity = Ui.loadResource(Rez.Strings.uv_none);
+    } else if (value >= 0.2 && value < 3) {
+        level = $.UV_INDEX_LOW;
         severity = Ui.loadResource(Rez.Strings.uv_low);
     } else if (value >= 3 && value < 6) {
-        level = 2;
+        level = $.UV_INDEX_MEDIUM;
         severity = Ui.loadResource(Rez.Strings.uv_medium);
     } else if (value >= 6 && value < 8) {
-        level = 3;
+        level = $.UV_INDEX_HIGH;
         severity = Ui.loadResource(Rez.Strings.uv_high);
     } else if (value >= 8 && value < 11) {
-        level = 4;
+        level = $.UV_INDEX_VERY_HIGH;
         severity = Ui.loadResource(Rez.Strings.uv_veryhigh);
     } else if (value >= 11) {
-        level = 5;
+        level = $.UV_INDEX_EXTREME;
         severity = Ui.loadResource(Rez.Strings.uv_extreme);
     } else {
         severity = Ui.loadResource(Rez.Strings.uv_unknown);
     }
+    $.logMessage("UVHelpers::getUVSeverity STOP");
     return {
         "level" => level,
         "severity" => severity
@@ -38,15 +43,15 @@ function getUVSeverityColor(value) {
     var color;
 
     // if/else uses less memory than switch/case
-    if (value < 3) {
+    if (value == $.UV_INDEX_LOW) {
         color = Gfx.COLOR_GREEN;
-    } else if (value >= 3 && value < 6) {
+    } else if (value == $.UV_INDEX_MEDIUM) {
         color = Gfx.COLOR_YELLOW;
-    } else if (value >= 6 && value < 8) {
+    } else if (value == $.UV_INDEX_HIGH) {
         color = Gfx.COLOR_ORANGE;
-    } else if (value >= 8 && value < 11) {
+    } else if (value == $.UV_INDEX_VERY_HIGH) {
         color = Gfx.COLOR_RED;
-    } else if (value >= 11) {
+    } else if (value == $.UV_INDEX_EXTREME) {
         color = Gfx.COLOR_PURPLE;
     } else {
         color = Gfx.COLOR_BLUE;

@@ -110,7 +110,7 @@ class OpenUVServiceDelegate extends System.ServiceDelegate {
 
         // enterReq();
         if ($.DEV_MODE) {
-            onReceive_OpenUV_Forecast(200, $.TESTDATA_OPENUV_FORECAST);
+            onReceive_OpenUV_Forecast(200, $.TESTDATA_OPENUV_FORECAST2);
         } else {
             if (_positionInfo != null) {
                 Communications.makeWebRequest(
@@ -206,16 +206,13 @@ class OpenUVServiceDelegate extends System.ServiceDelegate {
                 var segment = uvForecastSegments[i];
                 var severity = getUVSeverity(segment["uv"]);
 
-                if (severity != currentSeverity) {
-                    // New segment started
-
-                    // Save previous segment
+                if (i==0 || severity != currentSeverity) { // first segment or new segment
+                    // Save segment
                     if (!currentSegment.isEmpty()) {
                         // se the start date of the next as the end date of the previous
                         currentSegment["endDate"] = segment["uv_time"];
                         dailyUVSegments.add(currentSegment);
                     }
-                    
                     // Start a new segment
                     currentSegment = {
                         "severity" => severity,
@@ -225,8 +222,18 @@ class OpenUVServiceDelegate extends System.ServiceDelegate {
                     currentSeverity = severity;
                 } else {
                     // Same segment, so update endDate
-                    // currentSegment["endDate"] = segment["uv_time"];
+                    currentSegment["endDate"] = segment["uv_time"];
                 }
+
+                if (i == uvForecastSegments.size() - 1) { // last segment
+                    // Save segment
+                    if (!currentSegment.isEmpty()) {
+                        // se the start date of the next as the end date of the previous
+                        currentSegment["endDate"] = segment["uv_time"];
+                        dailyUVSegments.add(currentSegment);
+                    }
+                }
+
             }
         }
 
@@ -240,22 +247,23 @@ class OpenUVServiceDelegate extends System.ServiceDelegate {
     }
 
     function getUVSeverity(value) {
+        var level;
 
-        var severity;
-
-        if (value < 3) {
-            severity = $.UV_INDEX_LOW;
+        if (value < 0.2) {
+            level = $.UV_INDEX_NONE;
+        } else if (value >= 0.2 && value < 3) {
+            level = $.UV_INDEX_LOW;
         } else if (value >= 3 && value < 6) {
-            severity = $.UV_INDEX_MEDIUM;
+            level = $.UV_INDEX_MEDIUM;
         } else if (value >= 6 && value < 8) {
-            severity = $.UV_INDEX_HIGH;
+            level = $.UV_INDEX_HIGH;
         } else if (value >= 8 && value < 11) {
-            severity = $.UV_INDEX_VERY_HIGH;
+            level = $.UV_INDEX_VERY_HIGH;
         } else if (value >= 11) {
-            severity = $.UV_INDEX_EXTREME;
+            level = $.UV_INDEX_EXTREME;
         } else {
-            severity = $.UV_INDEX_UNKNOWN;
+            level = $.UV_INDEX_UNKNOWN;
         }
-        return severity;
+        return level;
     }
 }

@@ -11,6 +11,7 @@
 	<string id="text_updated">LAST UPDATED</string>
 
 	<!-- UV Severities -->
+	<string id="uv_none">NONE</string>
 	<string id="uv_low">LOW</string>
 	<string id="uv_medium">MED</string>
 	<string id="uv_high">HIGH</string>
