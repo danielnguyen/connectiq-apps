@@ -1,11 +1,13 @@
 <strings>
     <string id="AppName">UV Tracker</string>
+    <string id="Title">UV INDEX</string>
 
 	<!-- Labels-->
 	<string id="am">am</string>
 	<string id="pm">pm</string>
 	<string id="text_now">NOW</string>
 	<string id="text_max">MAX</string>
+	<string id="text_risk">RISK</string>
 	<string id="text_updated">LAST UPDATED</string>
 
 	<!-- UV Severities -->
@@ -15,4 +17,12 @@
 	<string id="uv_veryhigh">VERY\nHIGH</string>
 	<string id="uv_extreme">XTRM</string>
 	<string id="uv_unknown">UNK</string>
+
+	<!-- Settings -->
+	<string id="settings_openuv_apikey">OpenUV.io API Key</string>
+	<string id="settings_exposure_time">Show Safe Exposure Time</string>
+	<string id="settings_uv_risk">Show UV Risk</string>
+	<string id="settings_uv_max">Show Max UV</string>
+	<string id="settings_location">Show Location</string>
+	<string id="settings_update_time">Show Update Time</string>
 </strings>

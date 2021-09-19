@@ -1,19 +1,10 @@
 <layout id="MainLayout">
-    <label id="app_name" font="Gfx.FONT_TINY" color="Gfx.COLOR_WHITE" x="center" y="10%" justification="Gfx.TEXT_JUSTIFY_CENTER" text="UV INDEX" />
-
-    <label id="message_value" font="Gfx.FONT_XTINY" color="Gfx.COLOR_WHITE" x="center" y="28%" justification="Gfx.TEXT_JUSTIFY_CENTER" />
-
-    <label id="uv_sev_label" font="Gfx.FONT_XTINY" color="Gfx.COLOR_LT_GRAY" x="15%" y="45%" justification="Gfx.TEXT_JUSTIFY_CENTER" text="RISK" />
-    <label id="uv_sev_value" font="Gfx.FONT_SMALL" color="Gfx.COLOR_WHITE" x="15%" y="50%" justification="Gfx.TEXT_JUSTIFY_CENTER" />
-
-    <!-- <label id="now_label" font="Gfx.FONT_XTINY" color="Gfx.COLOR_LT_GRAY" x="center" y="65%" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.text_now" /> -->
-    <label id="uv_now_value" font="Gfx.FONT_SYSTEM_NUMBER_THAI_HOT" color="Gfx.COLOR_WHITE" x="center" y="center" justification="Gfx.TEXT_JUSTIFY_CENTER" />
-
-    <label id="uv_max_label" font="Gfx.FONT_XTINY" color="Gfx.COLOR_LT_GRAY" x="85%" y="45%" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.text_max" />
-    <label id="uv_max_value" font="Gfx.FONT_SMALL" color="Gfx.COLOR_WHITE" x="85%" y="50%" justification="Gfx.TEXT_JUSTIFY_CENTER" />
-
-    <label id="location_value" font="Gfx.FONT_XTINY" color="Gfx.COLOR_WHITE" x="center" y="65%" justification="Gfx.TEXT_JUSTIFY_CENTER" />
-
-    <label id="uv_time_label" font="Gfx.FONT_XTINY" color="Gfx.COLOR_LT_GRAY" x="center" y="78%" justification="Gfx.TEXT_JUSTIFY_CENTER" text="@Strings.text_updated" />
-    <label id="uv_time_value" font="Gfx.FONT_XTINY" color="Gfx.COLOR_WHITE" x="center" y="85%" justification="Gfx.TEXT_JUSTIFY_CENTER" />
+    <drawable class="Title" />
+    <drawable class="Message" />
+    <drawable class="Current" />
+    <drawable class="Risk" />
+    <drawable class="Max" />
+    <drawable class="Location" />
+    <drawable class="UpdateTime" />
+    <drawable class="Ring" />
 </layout>

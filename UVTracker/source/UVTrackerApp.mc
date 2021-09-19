@@ -30,23 +30,14 @@ class UVTrackerApp extends Application.AppBase {
     function getInitialView() as Array<Views or InputDelegates>? {
         $.logMessage("App::getInitialView ENTER");
 
-        // Get latest position and cache it
-        Position.enableLocationEvents(Position.LOCATION_ONE_SHOT, method(:onPosition));
-
-        Background.deleteTemporalEvent();
-
-        Storage.setValue("DataRefreshInterval", REFRESH_INTERVAL);
-        var duration = new Time.Duration(REFRESH_INTERVAL * 60);
-
-        if(Background.getLastTemporalEventTime() == null) { //just for first run
-            Background.registerForTemporalEvent(Time.now());
-            $.logMessage("getInitialView: No last TemporalEvent, registered NOW");      
+        var app = Application.getApp();
+        var OPENUV_API_KEY = app.getProperty("OPENUV_API_KEY");
+        if (OPENUV_API_KEY != null && OPENUV_API_KEY.length() > 0) {
+            initTimedEvent();
+        } else {
+            app.setProperty("message", "No API key specified");
         }
-        else {
-             Background.registerForTemporalEvent(Background.getLastTemporalEventTime().add(duration));
-             $.logMessage("getInitialView: TemporalEvent registered as last + refreshInterval");
-        }
-
+        
         $.logMessage("App::getInitialView EXIT");
         return [ new UVTrackerView() ];
     }
@@ -80,6 +71,30 @@ class UVTrackerApp extends Application.AppBase {
         $.logMessage("App::onPosition ENTER");
         Storage.setValue($.STORAGE_LOCATION, info.position.toDegrees());
         $.logMessage("App::onPosition EXIT");
+    }
+
+    function onSettingsChanged() { // triggered by settings change in GCM
+        initTimedEvent();
+        WatchUi.requestUpdate();   // update the view to reflect changes
+    }
+
+    private function initTimedEvent() {
+        // Get latest position and cache it
+        Position.enableLocationEvents(Position.LOCATION_ONE_SHOT, method(:onPosition));
+
+        Background.deleteTemporalEvent();
+
+        Storage.setValue("DataRefreshInterval", REFRESH_INTERVAL);
+        var duration = new Time.Duration(REFRESH_INTERVAL * 60);
+
+        if (Background.getLastTemporalEventTime() == null) { //just for first run
+            Background.registerForTemporalEvent(Time.now());
+            $.logMessage("initTimedEvent: No last TemporalEvent, registered NOW");      
+        }
+        else {
+            Background.registerForTemporalEvent(Background.getLastTemporalEventTime().add(duration));
+            $.logMessage("initTimedEvent: TemporalEvent registered as last + refreshInterval");
+        }
     }
 
 }

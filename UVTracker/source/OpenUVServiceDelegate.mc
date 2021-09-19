@@ -7,6 +7,8 @@ using Toybox.WatchUi;
 (:background)
 class OpenUVServiceDelegate extends System.ServiceDelegate {
 
+    private var OPENUV_API_KEY;
+
     private var OPENUV_UV_API           = "https://api.openuv.io/api/v1/uv";
     private var OPENUV_FORECAST_API     = "https://api.openuv.io/api/v1/forecast";
     private var NOMINATIM_REVERSE_API   = "https://nominatim.openstreetmap.org/reverse";
@@ -39,16 +41,22 @@ class OpenUVServiceDelegate extends System.ServiceDelegate {
     //A callback method that is triggered in the background when time-based events occur.
     function onTemporalEvent() {
     	$.logMessage("Making request");
-        // Get latest locationfrom Activity Info
-        var location = Activity.getActivityInfo().currentLocation;
-        if (location != null) {
-            $.logMessage("New location detected");
-            // Update cache with latest location
-            Storage.setValue($.STORAGE_LOCATION, location.toDegrees());
-        }
-        _positionInfo = Storage.getValue($.STORAGE_LOCATION);
 
-        makeRequests();
+        var app = Application.getApp();
+
+        OPENUV_API_KEY = app.getProperty("OPENUV_API_KEY");
+        if (OPENUV_API_KEY != null && OPENUV_API_KEY instanceof String && OPENUV_API_KEY.length() > 0) {
+            // Get latest locationfrom Activity Info
+            var location = Activity.getActivityInfo().currentLocation;
+            if (location != null) {
+                $.logMessage("New location detected");
+                // Update cache with latest location
+                Storage.setValue($.STORAGE_LOCATION, location.toDegrees());
+            }
+            _positionInfo = Storage.getValue($.STORAGE_LOCATION);
+
+            makeRequests();
+        }
     }
 
     function makeRequests() {
@@ -64,7 +72,7 @@ class OpenUVServiceDelegate extends System.ServiceDelegate {
             :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON,
             :headers => {
                 "Content-Type" => Communications.REQUEST_CONTENT_TYPE_URL_ENCODED,
-                "x-access-token" => $.OPENUV_API_KEY
+                "x-access-token" => OPENUV_API_KEY
             }
         };
 
@@ -96,7 +104,7 @@ class OpenUVServiceDelegate extends System.ServiceDelegate {
             :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON,
             :headers => {
                 "Content-Type" => Communications.REQUEST_CONTENT_TYPE_URL_ENCODED,
-                "x-access-token" => $.OPENUV_API_KEY
+                "x-access-token" => OPENUV_API_KEY
             }
         };
 

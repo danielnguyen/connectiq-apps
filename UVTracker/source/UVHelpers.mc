@@ -3,26 +3,54 @@ using Toybox.Lang;
 using Toybox.System;
 using Toybox.Time;
 using Toybox.Time.Gregorian;
-using Toybox.WatchUi;
+using Toybox.WatchUi as Ui;
 
-function getUVSeverityColor(severity) {
+function getUVSeverity(value) {
+
+    var level = 0;
+    var severity;
+
+    if (value < 3) {
+        level = 1;
+        severity = Ui.loadResource(Rez.Strings.uv_low);
+    } else if (value >= 3 && value < 6) {
+        level = 2;
+        severity = Ui.loadResource(Rez.Strings.uv_medium);
+    } else if (value >= 6 && value < 8) {
+        level = 3;
+        severity = Ui.loadResource(Rez.Strings.uv_high);
+    } else if (value >= 8 && value < 11) {
+        level = 4;
+        severity = Ui.loadResource(Rez.Strings.uv_veryhigh);
+    } else if (value >= 11) {
+        level = 5;
+        severity = Ui.loadResource(Rez.Strings.uv_extreme);
+    } else {
+        severity = Ui.loadResource(Rez.Strings.uv_unknown);
+    }
+    return {
+        "level" => level,
+        "severity" => severity
+    };
+}
+
+function getUVSeverityColor(value) {
     var color;
 
     // if/else uses less memory than switch/case
-    if (severity == $.UV_INDEX_LOW) {
+    if (value < 3) {
         color = Gfx.COLOR_GREEN;
-    } else if (severity == $.UV_INDEX_MEDIUM) {
+    } else if (value >= 3 && value < 6) {
         color = Gfx.COLOR_YELLOW;
-    } if (severity == $.UV_INDEX_HIGH) {
+    } else if (value >= 6 && value < 8) {
         color = Gfx.COLOR_ORANGE;
-    } if (severity == $.UV_INDEX_VERY_HIGH) {
+    } else if (value >= 8 && value < 11) {
         color = Gfx.COLOR_RED;
-    } if (severity == $.UV_INDEX_EXTREME) {
+    } else if (value >= 11) {
         color = Gfx.COLOR_PURPLE;
     } else {
         color = Gfx.COLOR_BLUE;
-    } 
-
+    }
     return color;
 }
 
@@ -34,9 +62,9 @@ function getTime() as String {
     if (!System.getDeviceSettings().is24Hour) {
         if (hours > 12) {
             hours = hours - 12;
-            meridium = WatchUi.loadResource(Rez.Strings.pm);
+            meridium = Ui.loadResource(Rez.Strings.pm);
         } else {
-            meridium = WatchUi.loadResource(Rez.Strings.am);
+            meridium = Ui.loadResource(Rez.Strings.am);
         }
     } else {
         if (Application.getApp().getProperty("UseMilitaryFormat")) {
