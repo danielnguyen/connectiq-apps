@@ -1,3 +1,37 @@
 <strings>
     <string id="AppName">CovidTracker</string>
+    <string id="Title">COVID-19</string>
+
+    <!-- Labels -->
+    <string id="label_min">MIN</string>
+    <string id="label_max">MAX</string>
+    <string id="label_current">NOW</string>
+    <string id="label_weekly_change">7 days</string>
+    <string id="label_daily">DAILY</string>
+
+    <!-- Settings -->
+    <string id="settings_location">Location</string>
+    <string id="settings_location_prompt">Select a location</string>
+    <string id="settings_min">Show minimum</string>
+    <string id="settings_max">Show maximum</string>
+    <string id="settings_current">Show current value</string>
+    <string id="settings_weekly_change">Show weekly change</string>
+    <string id="settings_secondary">Show secondary location</string>
+
+    <!-- Locations -->
+    <string id="location_label_canada" scope="background">Canada</string>
+    <string id="location_label_ab" scope="background">Alberta</string>
+    <string id="location_label_bc" scope="background">British Columbia</string>
+    <string id="location_label_mb" scope="background">Manitoba</string>
+    <string id="location_label_nb" scope="background">New Brunswick</string>
+    <string id="location_label_nl" scope="background">Newfoundland and Labrador</string>
+    <string id="location_label_nt" scope="background">Northwest Territories</string>
+    <string id="location_label_ns" scope="background">Nova Scotia</string>
+    <string id="location_label_nu" scope="background">Nunavut</string>
+    <string id="location_label_on" scope="background">Ontario</string>
+    <string id="location_label_pe" scope="background">Prince Edward Island</string>
+    <string id="location_label_qc" scope="background">Quebec</string>
+    <string id="location_label_sk" scope="background">Saskatchewan</string>
+    <string id="location_label_yt" scope="background">Yukon</string>
+    <string id="location_label_rp" scope="background">Repatriated</string>
 </strings>

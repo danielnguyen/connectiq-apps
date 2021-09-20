@@ -13,9 +13,8 @@ class OpenCovidBackgroundService extends System.ServiceDelegate {
 
     private var OPENCOVID_SUMMARY_API = "https://api.opencovid.ca/summary";
     private var OPENCOVID_TIMESERIES_API = "https://api.opencovid.ca/timeseries";
-    private var DEFAULT_REQUEST_COUNT = 3;
+    private var DEFAULT_REQUEST_COUNT = 1;
 
-    private var _positionInfo = null;
     private var bgData;
 
     private var reqCount;
@@ -44,20 +43,6 @@ class OpenCovidBackgroundService extends System.ServiceDelegate {
 
         bgData = {};
 
-        var activityInfo = Activity.getActivityInfo();
-
-        // Get latest location from Activity Info
-        if (activityInfo.currentLocation != null) {
-            _positionInfo = activityInfo.currentLocation.toDegrees();
-        } else {
-            $.logMessage("Activity Info current location is null");
-            // Try to use last known location
-            _positionInfo = Storage.getValue("position");
-        }
-       
-        if (_positionInfo == null)  {
-           $.logMessage("Unable to get position (ActivityInfo or cache)");
-        }
         makeRequest();
         bgData["updated"] = Time.now().value();
     }
@@ -65,12 +50,16 @@ class OpenCovidBackgroundService extends System.ServiceDelegate {
     //! Make the web request to OpenUV
     private function makeRequest() {
         $.logMessage("BackgroundService::makeRequest ENTER");
+
+        var loc = Application.getApp().getProperty("selected_location");
+        loc = getLocationCodeByIndex(loc);
+
         // enterReq();
         if ($.DEV_MODE) {
 
-            onReceive_ON(200, $.TESTDATA_OPENCOVID_ON);
-            onReceive_TOR(200, $.TESTDATA_OPENCOVID_TOR);
-            onReceive_YORK(200, $.TESTDATA_OPENCOVID_YORK);
+            onReceive(200, $.TESTDATA_OPENCOVID_ON);
+            // onReceive_TOR(200, $.TESTDATA_OPENCOVID_TOR);
+            // onReceive_YORK(200, $.TESTDATA_OPENCOVID_YORK);
             
         } else {
 
@@ -87,76 +76,76 @@ class OpenCovidBackgroundService extends System.ServiceDelegate {
             var sevenDaysAgo = Gregorian.info(sevenDaysAgoMoment, Time.FORMAT_SHORT);
             afterDate += sevenDaysAgo.day.format("%02d") + "-" + sevenDaysAgo.month.format("%02d") + "-" + sevenDaysAgo.year;
             
-            $.logMessage("Performing API call: " + OPENCOVID_TIMESERIES_API);
+            $.logMessage("Performing API call: " + OPENCOVID_TIMESERIES_API + "?stat=cases&loc=" + loc + "&after=" + afterDate);
             Communications.makeJsonRequest(
                 OPENCOVID_TIMESERIES_API,
                 {
                     "stat" => "cases",
-                    "loc" => "ON",
+                    "loc" => loc,
                     "after" => afterDate
                 },
                 options,
-                method(:onReceive_ON)
+                method(:onReceive)
             );
             
-            $.logMessage("Performing API call: " + OPENCOVID_SUMMARY_API);
-            Communications.makeJsonRequest(
-                OPENCOVID_SUMMARY_API,
-                {
-                    "loc" => "3595"
-                },
-                options,
-                method(:onReceive_TOR)
-            );
+            // $.logMessage("Performing API call: " + OPENCOVID_SUMMARY_API);
+            // Communications.makeJsonRequest(
+            //     OPENCOVID_SUMMARY_API,
+            //     {
+            //         "loc" => "3595"
+            //     },
+            //     options,
+            //     method(:onReceive_TOR)
+            // );
             
-            $.logMessage("Performing API call: " + OPENCOVID_SUMMARY_API);
-            Communications.makeJsonRequest(
-                OPENCOVID_SUMMARY_API,
-                {
-                    "loc" => "3570"
-                },
-                options,
-                method(:onReceive_YORK)
-            );
+            // $.logMessage("Performing API call: " + OPENCOVID_SUMMARY_API);
+            // Communications.makeJsonRequest(
+            //     OPENCOVID_SUMMARY_API,
+            //     {
+            //         "loc" => "3570"
+            //     },
+            //     options,
+            //     method(:onReceive_YORK)
+            // );
         }
         $.logMessage("BackgroundService::makeRequest EXIT");
     }
 
-    public function onReceive_ON(responseCode as Number, data as Dictionary?) as Void {
-        $.logMessage("BackgroundService::onReceive_ON ENTER");
+    public function onReceive(responseCode as Number, data as Dictionary?) as Void {
+        $.logMessage("BackgroundService::onReceive ENTER");
         $.logMessage("Response Code: " + responseCode);
         if (data != null) {
             var historicalData = getSevenDayAverages(data["cases"]);
-            onReceive(responseCode, historicalData, "covid19data_on_14days");
+            saveData(responseCode, historicalData, "covid19data_14days");
 
-            onReceive(responseCode, data["cases"][data["cases"].size()-1], "covid19data_on");
+            saveData(responseCode, data["cases"][data["cases"].size()-1], "covid19data");
         }
-        $.logMessage("BackgroundService::onReceive_ON EXIT");
+        $.logMessage("BackgroundService::onReceive EXIT");
        	exitReq();
     }
 
-    public function onReceive_TOR(responseCode as Number, data as Dictionary?) as Void {
-        $.logMessage("BackgroundService::onReceive_TOR ENTER");
-        $.logMessage("Response Code: " + responseCode);
-        if (data != null) {
-            onReceive(responseCode, data["summary"][data.size()-1], "covid19data_tor");
-        }
-        $.logMessage("BackgroundService::onReceive_TOR EXIT");
-       	exitReq();
-    }
+    // public function onReceive_TOR(responseCode as Number, data as Dictionary?) as Void {
+    //     $.logMessage("BackgroundService::onReceive_TOR ENTER");
+    //     $.logMessage("Response Code: " + responseCode);
+    //     if (data != null) {
+    //         onReceive(responseCode, data["summary"][data.size()-1], "covid19data_tor");
+    //     }
+    //     $.logMessage("BackgroundService::onReceive_TOR EXIT");
+    //    	exitReq();
+    // }
 
-    public function onReceive_YORK(responseCode as Number, data as Dictionary?) as Void {
-        $.logMessage("BackgroundService::onReceive_YORK ENTER");
-        $.logMessage("Response Code: " + responseCode);
-        if (data != null) {
-            onReceive(responseCode, data["summary"][data.size()-1], "covid19data_york");
-        }
-        $.logMessage("BackgroundService::onReceive_YORK EXIT");
-       	exitReq();
-    }
+    // public function onReceive_YORK(responseCode as Number, data as Dictionary?) as Void {
+    //     $.logMessage("BackgroundService::onReceive_YORK ENTER");
+    //     $.logMessage("Response Code: " + responseCode);
+    //     if (data != null) {
+    //         onReceive(responseCode, data["summary"][data.size()-1], "covid19data_york");
+    //     }
+    //     $.logMessage("BackgroundService::onReceive_YORK EXIT");
+    //    	exitReq();
+    // }
 
-    private function onReceive(responseCode as Number, data as Dictionary?, location as String) as Void {
-        $.logMessage("BackgroundService::onReceive ENTER");
+    private function saveData(responseCode as Number, data as Dictionary?, location as String) as Void {
+        $.logMessage("BackgroundService::saveData ENTER");
         $.logMessage("Response Code: " + responseCode);
         if(responseCode == 200) {
    			bgData[location] = data;
@@ -164,7 +153,7 @@ class OpenCovidBackgroundService extends System.ServiceDelegate {
             $.logMessage("Received response code: " + responseCode);
         }
 
-        $.logMessage("BackgroundService::onReceive EXIT");
+        $.logMessage("BackgroundService::saveData EXIT");
     }
 
 	// Return an array of 7-day averages of case counts
@@ -192,5 +181,12 @@ class OpenCovidBackgroundService extends System.ServiceDelegate {
 
 		// $.logMessage("Covid::getSevenDayAverages EXIT");
 		return ret;
+	}
+	
+	function getLocationCodeByIndex(value) {
+	    if (value > $.LOCATIONS.size() || $.LOCATIONS[value][:code] == null) {
+	        return null;
+	    }
+	    return $.LOCATIONS[value][:code];
 	}
 }

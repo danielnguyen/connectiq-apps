@@ -7,45 +7,44 @@ using Toybox.Time;
 using Toybox.Time.Gregorian;
 using Toybox.WatchUi as Ui;
 
-class Covid extends Ui.Drawable {
+class Trend extends Ui.Drawable {
 
 	function initialize() {
-		Drawable.initialize({ :identifier => "Covid" });
+		Drawable.initialize({ :identifier => "Trend" });
 	}
 	
 	function draw(dc) {
 
-		var x = ( $.SCREEN_X / 2), y = ( $.SCREEN_Y / 2) + 65;
-		var label = "DAILY";
-		dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-		dc.drawText(x, y, $.fontXTiny, label, Graphics.TEXT_JUSTIFY_CENTER);
+		// var x = ( $.SCREEN_X / 2), y = ( $.SCREEN_Y / 2) + 65;
+		// var label = "DAILY";
+		// dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+		// dc.drawText(x, y, $.fontXTiny, label, Graphics.TEXT_JUSTIFY_CENTER);
 
 		var ontario = "-";
-		if (Storage.getValue("covid19data_on")) {
-			var data = Storage.getValue("covid19data_on");
+		if (Storage.getValue("covid19data")) {
+			var data = Storage.getValue("covid19data");
 			ontario = data["cases"]; // Today's cases
 		}
 
 		var ontarioDataPoints = [];
-		if (Storage.getValue("covid19data_on_14days")) {
-			ontarioDataPoints = Storage.getValue("covid19data_on_14days");
+		if (Storage.getValue("covid19data_14days")) {
+			ontarioDataPoints = Storage.getValue("covid19data_14days");
 		}
-		var toronto = "-";
-		if (Storage.getValue("covid19data_tor")) {
-			var data = Storage.getValue("covid19data_tor");
-			toronto = data["cases"];
-		}
-		var yorkregion = "-";
-		if (Storage.getValue("covid19data_york")) {
-			var data = Storage.getValue("covid19data_york");
-			yorkregion = data["cases"];
-		}
+		// var toronto = "-";
+		// if (Storage.getValue("covid19data_tor")) {
+		// 	var data = Storage.getValue("covid19data_tor");
+		// 	toronto = data["cases"];
+		// }
+		// var yorkregion = "-";
+		// if (Storage.getValue("covid19data_york")) {
+		// 	var data = Storage.getValue("covid19data_york");
+		// 	yorkregion = data["cases"];
+		// }
 
-		drawToronto(dc, toronto);
-		drawYorkRegion(dc, yorkregion);
+		// drawToronto(dc, toronto);
+		// drawYorkRegion(dc, yorkregion);
 		// drawTrendLine(dc, ontarioDataPoints);
 		drawBarGraph(dc, ontarioDataPoints);
-		drawStats(dc, ontarioDataPoints);
   	}
 
 	function drawOntario(dc, value) {
@@ -130,66 +129,26 @@ class Covid extends Ui.Drawable {
 			dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 			dc.drawText(x, y - 10, $.fontXTiny, value, Graphics.TEXT_JUSTIFY_CENTER);
 		} else {
-			var points = getDataPointCoords(dataPoints, 20, 30);
+			var points = getDataPointCoords(dataPoints, 22, 0);
 
-			dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
+			var graphLineY = y + 40;
+			
 			for (var n = 0; n < points.size(); n++) {
 				var point = points[n];
 
-				dc.setPenWidth(10);
-				dc.drawLine(point[0], point[1], point[0], y + 50);
+				var offsetX = -8;
+				var offsetY = 0;
+				dc.setColor(Graphics.COLOR_YELLOW, Graphics.COLOR_TRANSPARENT);
+				if (n < points.size() - 1) { // Highlight last column
+					dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
+				}
+				// dc.drawRoundedRectangle(point[0] + offsetX, point[1] + offsetY, 10, graphLineY - point[1] - offsetY, 1);
+				dc.fillRoundedRectangle(point[0] + offsetX, point[1] + offsetY, 15, graphLineY - point[1] - offsetY, 1);
 			}
-		}
-	}
 
-	function drawStats(dc, dataPoints) {
-		var x = $.SCREEN_X / 2, y = $.SCREEN_Y / 2;
-		if (dataPoints == null || dataPoints.size() < 1) {
-
-			var value = "No data";
-
+			// Draw X-axis line
 			dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-			dc.drawText(x, y - 10, $.fontXTiny, value, Graphics.TEXT_JUSTIFY_CENTER);
-		} else {
-			// Determine min/max of results
-			var minMax = getMinMax(dataPoints);
-
-			var minLabel = "MIN";
-			var currLabel = "TODAY";
-			var maxLabel = "MAX";
-			var changeLabel = "7 DAYS";
-
-			// Max (top left)
-			dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-			dc.drawText(30, y - 35, $.fontXTiny, maxLabel, Graphics.TEXT_JUSTIFY_CENTER);
-
-			dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-			dc.drawText(30, y - 20, $.fontTiny, minMax[1], Graphics.TEXT_JUSTIFY_CENTER);
-
-			// Min (bottom left)
-			dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-			dc.drawText(30, y + 20, $.fontXTiny, minLabel, Graphics.TEXT_JUSTIFY_CENTER);
-
-			dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-			dc.drawText(30, y + 35, $.fontTiny, minMax[0], Graphics.TEXT_JUSTIFY_CENTER);
-
-			// Today (top right)
-			dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-			dc.drawText($.SCREEN_Y - 30, y - 35, $.fontXTiny, currLabel, Graphics.TEXT_JUSTIFY_CENTER);
-
-			dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-			dc.drawText($.SCREEN_Y - 30, y - 20, $.fontTiny, dataPoints[dataPoints.size() - 1], Graphics.TEXT_JUSTIFY_CENTER);
-
-			// Change since last week (bottom right)
-			var diff = (dataPoints[dataPoints.size() - 1].toFloat() - dataPoints[0].toFloat()) / minMax[1].toFloat();
-			var changeValue = diff > 0 ? "+" : "";
-			changeValue += (diff * 100).toNumber() + "%";
-
-			dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-			dc.drawText($.SCREEN_Y - 30, y + 20, $.fontXTiny, changeLabel, Graphics.TEXT_JUSTIFY_CENTER);
-
-			dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-			dc.drawText($.SCREEN_Y - 30, y + 35, $.fontTiny, changeValue, Graphics.TEXT_JUSTIFY_CENTER);
+			dc.drawLine(x - 90, graphLineY - 1, x + 90, graphLineY - 1);
 		}
 	}
 

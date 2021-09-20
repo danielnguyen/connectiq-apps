@@ -1,0 +1,27 @@
+<resources>
+    <properties>
+    	<property id="selected_location" type="number">0</property>
+    </properties>
+
+    <settings>
+        <setting propertyKey="@Properties.selected_location" title="@Strings.settings_location" prompt="@Strings.settings_location_prompt">
+            <settingConfig type="list">
+                <listEntry value="0">@Strings.location_label_canada</listEntry>
+                <listEntry value="1">@Strings.location_label_ab</listEntry>
+                <listEntry value="2">@Strings.location_label_bc</listEntry>
+                <listEntry value="3">@Strings.location_label_mb</listEntry>
+                <listEntry value="4">@Strings.location_label_nb</listEntry>
+                <listEntry value="5">@Strings.location_label_nl</listEntry>
+                <listEntry value="6">@Strings.location_label_nt</listEntry>
+                <listEntry value="7">@Strings.location_label_ns</listEntry>
+                <listEntry value="8">@Strings.location_label_nu</listEntry>
+                <listEntry value="9">@Strings.location_label_on</listEntry>
+                <listEntry value="10">@Strings.location_label_pe</listEntry>
+                <listEntry value="11">@Strings.location_label_qc</listEntry>
+                <listEntry value="12">@Strings.location_label_sk</listEntry>
+                <listEntry value="13">@Strings.location_label_yt</listEntry>
+                <listEntry value="14">@Strings.location_label_rp</listEntry>
+            </settingConfig>
+        </setting>
+    </settings>
+</resources>
