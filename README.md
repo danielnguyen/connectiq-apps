@@ -1,5 +1,5 @@
 # connectiq-apps
-A repository containing all of Danie's Garmin Connect IQ apps, widgets, data fields and faces.
+A repository containing all of Daniel's Garmin Connect IQ apps, widgets, data fields and faces.
 
 ## Watch Faces
 
