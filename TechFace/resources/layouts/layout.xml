@@ -1,0 +1,11 @@
+<layout id="WatchFace">
+    <drawable class="Background" />
+
+    <drawable class="Clock" />
+    <drawable class="Date" />
+    <drawable class="Battery" />
+    <drawable class="Heart" />
+    <drawable class="Covid" />
+    <drawable class="Weather" />
+    <drawable class="Health" />
+</layout>

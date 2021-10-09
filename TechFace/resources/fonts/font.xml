@@ -1,0 +1,21 @@
+<fonts>
+	<font id="Roboto6Font" filename="Roboto/Roboto_6_WH.fnt" antialias="true" />
+	<font id="Roboto8Font" filename="Roboto/Roboto_8_WH.fnt" antialias="true" />
+	<font id="Roboto10Font" filename="Roboto/Roboto_10_WH.fnt" antialias="true" />
+	<font id="Roboto12Font" filename="Roboto/Roboto_12_WH.fnt" antialias="true" />
+	<font id="Roboto16Font" filename="Roboto/Roboto_16_WH.fnt" antialias="true" />
+	<font id="Roboto18Font" filename="Roboto/Roboto_18_WH.fnt" antialias="true" />
+	<font id="Roboto24Font" filename="Roboto/Roboto_24_WH.fnt" antialias="true" filter="0123456789AMP: " />
+	<font id="Roboto48Font" filename="Roboto/Roboto_48_WH.fnt" antialias="true" filter="0123456789:-" />
+	<font id="Roboto60Font" filename="Roboto/Roboto_60_WH.fnt" antialias="true" filter="0123456789:" />
+	<font id="Roboto72Font" filename="Roboto/Roboto_72_WH.fnt" antialias="true" filter="0123456789:" />
+
+	<font id="Squared6Font" filename="Squared/Squared_6_WH.fnt" antialias="true" />
+	<font id="Squared8Font" filename="Squared/Squared_8_WH.fnt" antialias="true" />
+	<font id="Squared16Font" filename="Squared/Squared_16_WH.fnt" antialias="true" />
+	<font id="Squared18Font" filename="Squared/Squared_18_WH.fnt" antialias="true" />
+	<font id="Squared24Font" filename="Squared/Squared_24_WH.fnt" antialias="true" filter="0123456789" />
+	<font id="Squared48Font" filename="Squared/Squared_48_WH.fnt" antialias="true" filter="0123456789-" />
+	<font id="Squared60Font" filename="Squared/Squared_60_WH.fnt" antialias="true" filter="0123456789:" />
+	<font id="Squared72Font" filename="Squared/Squared_72_WH.fnt" antialias="true" filter="0123456789:" />
+</fonts>
